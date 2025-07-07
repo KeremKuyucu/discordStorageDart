@@ -15,6 +15,7 @@ doc/api/
 .env*
 config.json
 .exe*
+-.exe*
 
 # Avoid committing generated Javascript files:
 *.dart.js

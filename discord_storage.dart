@@ -65,21 +65,24 @@ class DiscordStorage {
     config = _loadConfig();
   }
 
-  Config _loadConfig() {
-    final configFile = File('config.json');
-    if (configFile.existsSync()) {
-      try {
-        final content = configFile.readAsStringSync();
-        final json = jsonDecode(content);
-        return Config.fromJson(json);
-      } catch (e) {
-        print('Error reading config.json: $e');
-        return _createDefaultConfig();
-      }
-    } else {
+Config _loadConfig() {
+  final scriptDir = path.dirname(Platform.script.toFilePath());
+  final configPath = path.join(scriptDir, 'config.json');
+  final configFile = File(configPath);
+
+  if (configFile.existsSync()) {
+    try {
+      final content = configFile.readAsStringSync();
+      final json = jsonDecode(content);
+      return Config.fromJson(json);
+    } catch (e) {
+      print('Error reading config.json: $e');
       return _createDefaultConfig();
     }
+  } else {
+    return _createDefaultConfig();
   }
+}
 
   Config _createDefaultConfig() {
     final defaultConfig = Config(
@@ -844,3 +847,7 @@ void main(List<String> arguments) async {
     print('❌ Error: $e');
   }
 }
+
+/*
+dart compile exe discord_storage.dart -o discordStorage.exe 
+*/
